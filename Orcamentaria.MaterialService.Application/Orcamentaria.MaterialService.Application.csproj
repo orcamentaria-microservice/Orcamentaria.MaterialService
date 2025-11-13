@@ -1,0 +1,16 @@
+<Project Sdk="Microsoft.NET.Sdk">
+	<PropertyGroup>
+		<TargetFramework>net9.0</TargetFramework>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+	</PropertyGroup>
+
+	<ItemGroup>
+	  <PackageReference Include="FluentValidation" Version="12.0.1" />
+	  <PackageReference Include="Orcamentaria.Lib.Domain" Version="10.0.8" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <ProjectReference Include="..\Orcamentaria.MaterialService.Domain\Orcamentaria.MaterialService.Domain.csproj" />
+	</ItemGroup>
+</Project>
