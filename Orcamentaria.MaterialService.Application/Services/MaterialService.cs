@@ -15,14 +15,14 @@ namespace Orcamentaria.MaterialService.Application.Services
 {
     public class MaterialService : IMaterialService
     {
-        private readonly IMaterialRepository _repository;
+        private readonly IMaterialRepository<Material> _repository;
         private readonly IMaterialSupplierService _materialSupplierService;
         private readonly IPersonServiceClient _personServiceClient;
         private readonly IMaterialValidator _validator;
         private readonly IMapper _mapper; 
 
         public MaterialService(
-            IMaterialRepository repository,
+            IMaterialRepository<Material> repository,
             IMaterialSupplierService materialSupplierService,
             IPersonServiceClient personServiceClient,
             IMaterialValidator validator,
@@ -202,14 +202,28 @@ namespace Orcamentaria.MaterialService.Application.Services
                 if (await _repository.GetByIdAsync(materialId) is null)
                     throw new InfoException($"O {materialId} nao foi encontrado.", ErrorCodeEnum.NotFound);
 
-                var removeSuppliers = new List<MaterialSupplier>();
-
-                foreach (var supplierId in dto.SupplierIds)
+                var gridParams = new GridParams
                 {
-                    var supplier = await _materialSupplierService.GetByIdAsync(supplierId);
+                    Filters = new List<FilterParam>
+                    {
+                        new FilterParam
+                        {
+                            Field = "materialId",
+                            Operator = "eq",
+                            Value = materialId
+                        },
+                        new FilterParam
+                        {
+                            Field = "supplierId",
+                            Operator = "in",
+                            Value = string.Join(", ", dto.SupplierIds)
+                        }
+                    },
+                    Page = 1,
+                    PageSize = 5
+                };
 
-                    removeSuppliers.Add(supplier);
-                }
+                var removeSuppliers = await _materialSupplierService.GetAsync(gridParams);
 
                 await _repository.RemoveSuppliersAsync(materialId, removeSuppliers);
 

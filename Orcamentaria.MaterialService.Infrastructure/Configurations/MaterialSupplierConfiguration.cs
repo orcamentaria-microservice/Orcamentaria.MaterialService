@@ -25,6 +25,11 @@ namespace Orcamentaria.MaterialService.Infrastructure.Configurations
                 .HasColumnName("SUPPLIER_ID")
                 .HasColumnType("BIGINT")
                 .IsRequired();
+
+            builder.Property(p => p.CompanyId)
+                .HasColumnName("COMPANY_ID")
+                .HasColumnType("BIGINT")
+                .IsRequired();
         }
     }
 }

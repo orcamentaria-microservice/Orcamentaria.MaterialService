@@ -4,16 +4,15 @@ using Orcamentaria.Lib.Domain.Models;
 using Orcamentaria.Lib.Domain.Validators;
 using Orcamentaria.MaterialService.Domain.Models;
 using Orcamentaria.MaterialService.Domain.Repositories;
-using Orcamentaria.MaterialService.Domain.ServiceClient;
 
 namespace Orcamentaria.MaterialService.Application.Validators
 {
     public class MaterialTypeValidator : AbstractValidator<MaterialType>, IValidatorEntity<MaterialType>
     {
-        private readonly IMaterialTypeRepository _repository;
+        private readonly IMaterialTypeRepository<MaterialType> _repository;
 
         public MaterialTypeValidator(
-            IMaterialTypeRepository repository)
+            IMaterialTypeRepository<MaterialType> repository)
         {
             _repository = repository;
         }

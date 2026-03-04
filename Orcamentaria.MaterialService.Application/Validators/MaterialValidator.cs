@@ -13,12 +13,12 @@ namespace Orcamentaria.MaterialService.Application.Validators
 {
     public class MaterialValidator : AbstractValidator<Material>, IMaterialValidator
     {
-        private readonly IMaterialRepository _repository;
+        private readonly IMaterialRepository<Material> _repository;
         private readonly IMaterialTypeService _materialTypeService;
         private readonly IPersonServiceClient _personServiceClient;
 
         public MaterialValidator(
-            IMaterialRepository repository,
+            IMaterialRepository<Material> repository,
             IMaterialTypeService materialTypeService,
             IPersonServiceClient personServiceClient)
         {

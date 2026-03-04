@@ -14,12 +14,12 @@ namespace Orcamentaria.MaterialService.Application.Services
 {
     public class MaterialTypeService : IMaterialTypeService
     {
-        private readonly IMaterialTypeRepository _repository;
+        private readonly IMaterialTypeRepository<MaterialType> _repository;
         private readonly IValidatorEntity<MaterialType> _validator;
         private readonly IMapper _mapper;
 
         public MaterialTypeService(
-            IMaterialTypeRepository repository,
+            IMaterialTypeRepository<MaterialType> repository,
             IValidatorEntity<MaterialType> validator,
             IMapper mapper)
         {

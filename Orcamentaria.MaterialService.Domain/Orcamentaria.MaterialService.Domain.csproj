@@ -8,6 +8,7 @@
 	<ItemGroup>
 	  <PackageReference Include="AutoMapper" Version="15.1.0" />
 	  <PackageReference Include="FluentValidation" Version="12.1.0" />
-	  <PackageReference Include="Orcamentaria.Lib.Domain" Version="10.0.8" />
+	  <PackageReference Include="Microsoft.EntityFrameworkCore" Version="9.0.11" />
+	  <PackageReference Include="Orcamentaria.Lib.Domain" Version="10.1.1" />
 	</ItemGroup>
 </Project>

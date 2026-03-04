@@ -13,7 +13,7 @@ using Orcamentaria.MaterialService.Domain.Services;
 using Orcamentaria.MaterialService.Domain.Validators;
 using Orcamentaria.MaterialService.Infrastructure.Contexts;
 using Orcamentaria.MaterialService.Infrastructure.Repositories;
-using Orcamentaria.MaterialService.Infrastructure.ServiceClient;
+using Orcamentaria.MaterialService.Infrastructure.ServiceClients;
 
 namespace Orcamentaria.MaterialService.API
 {
@@ -46,9 +46,9 @@ namespace Orcamentaria.MaterialService.API
                         typeof(MaterialTypeMapper));
 
                     //Repositories
-                    services.AddScoped<IMaterialRepository, MaterialRespository>();
-                    services.AddScoped<IMaterialTypeRepository, MaterialTypeRespository>();
-                    services.AddScoped<IMaterialSupplierRepository, MaterialSupplierRespository>();
+                    services.AddScoped<IMaterialRepository<Material>, MaterialRepository>();
+                    services.AddScoped<IMaterialTypeRepository<MaterialType>, MaterialTypeRepository>();
+                    services.AddScoped<IMaterialSupplierRepository<MaterialSupplier>, MaterialSupplierRepository>();
 
                     //Services
                     services.AddScoped<IMaterialService, Application.Services.MaterialService>();

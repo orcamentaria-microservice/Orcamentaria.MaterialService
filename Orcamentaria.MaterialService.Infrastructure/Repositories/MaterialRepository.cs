@@ -1,7 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Orcamentaria.Lib.Domain.Contexts;
 using Orcamentaria.Lib.Domain.Exceptions;
-using Orcamentaria.Lib.Infrastructure.Contexts;
 using Orcamentaria.Lib.Infrastructure.Repositories;
 using Orcamentaria.MaterialService.Domain.Models;
 using Orcamentaria.MaterialService.Domain.Repositories;
@@ -9,12 +8,12 @@ using Orcamentaria.MaterialService.Infrastructure.Contexts;
 
 namespace Orcamentaria.MaterialService.Infrastructure.Repositories
 {
-    public class MaterialRespository : BasicRepository<Material>, IMaterialRepository
+    public class MaterialRepository : BaseRepository<Material>, IMaterialRepository<Material>
     {
         private readonly MySqlContext _context;
         private readonly IUserAuthContext _userAuthContext;
 
-        public MaterialRespository(
+        public MaterialRepository(
             MySqlContext context, 
             IUserAuthContext userAuthContext) 
             : base(context, userAuthContext)

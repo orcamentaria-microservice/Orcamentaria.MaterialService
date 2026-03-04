@@ -6,9 +6,9 @@ using Orcamentaria.MaterialService.Infrastructure.Contexts;
 
 namespace Orcamentaria.MaterialService.Infrastructure.Repositories
 {
-    public class MaterialSupplierRespository : BasicRepository<MaterialSupplier>, IMaterialSupplierRepository
+    public class MaterialTypeRepository : BaseRepository<MaterialType>, IMaterialTypeRepository<MaterialType>
     {
-        public MaterialSupplierRespository(
+        public MaterialTypeRepository(
             MySqlContext context, 
             IUserAuthContext userAuthContext) 
             : base(context, userAuthContext)

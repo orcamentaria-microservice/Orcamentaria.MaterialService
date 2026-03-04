@@ -1,7 +1,9 @@
 ﻿using Microsoft.Extensions.Options;
+using Orcamentaria.Lib.Domain.Enums;
 using Orcamentaria.Lib.Domain.Exceptions;
 using Orcamentaria.Lib.Domain.Models;
 using Orcamentaria.Lib.Domain.Models.Configurations;
+using Orcamentaria.Lib.Domain.Models.Exceptions;
 using Orcamentaria.Lib.Domain.Models.Responses;
 using Orcamentaria.Lib.Domain.Providers;
 using Orcamentaria.Lib.Domain.Services;
@@ -10,7 +12,7 @@ using Orcamentaria.MaterialService.Domain.ServiceClient;
 using Polly;
 using System.Text.Json;
 
-namespace Orcamentaria.MaterialService.Infrastructure.ServiceClient
+namespace Orcamentaria.MaterialService.Infrastructure.ServiceClients
 {
     public class PersonServiceClient : IPersonServiceClient
     {
@@ -63,7 +65,20 @@ namespace Orcamentaria.MaterialService.Infrastructure.ServiceClient
                     }
                 };
 
-                var token = await _tokenProvider.GetTokenAsync();
+                var token = "";
+                try
+                {
+                    token = await _tokenProvider.GetTokenAsync();
+                }
+                catch (DefaultException)
+                {
+                    throw;
+                }
+                catch (Exception ex)
+                {
+                    throw new BusinessException($"Erro ao buscar/gerar token: {ex.Message}", ErrorCodeEnum.InternalError);
+                }
+
                 ResilienceContext context = ResilienceContextPool.Shared.Get(continueOnCapturedContext: true);
                 context.Properties.Set(new ResiliencePropertyKey<IEnumerable<long>>("supplierIds"), personIds);
 
@@ -114,6 +129,10 @@ namespace Orcamentaria.MaterialService.Infrastructure.ServiceClient
                 );
                 
                 return response;
+            }
+            catch(DefaultException)
+            {
+                throw;
             }
             catch (Exception ex)
             {
