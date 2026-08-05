@@ -149,9 +149,7 @@ A aplicação usa o modelo padrão de configuração do ASP.NET Core (`appsettin
 
 **`Orcamentaria.MaterialService.API/appsettings.Development.json`**: contém overrides de `Logging` para o ambiente de desenvolvimento.
 
-A infraestrutura compartilhada (`Orcamentaria.Lib.Infrastructure`) também consome, via `IOptions<T>`, as seções `ServiceRegistryConfiguration` (registro/descoberta no Service Registry), `MessageBrokerConfiguration` (RabbitMQ) e `ServiceConfiguration` (identificação do serviço) — essas seções não constam nos arquivos `appsettings*.json` deste repositório, sendo esperadas via variáveis de ambiente ou configuração externa no ambiente de execução.
-
-A string de conexão com o banco de dados (`ConnectionStrings:DefaultConnection`) também não está definida em `appsettings.json`, sendo fornecida via variável de ambiente (ver `compose.yaml`).
+As demais configurações do serviço — `ServiceRegistryConfiguration` (registro/descoberta no Service Registry), `MessageBrokerConfiguration` (RabbitMQ), `ServiceConfiguration` (identificação do serviço) e a string de conexão com o banco de dados (`ConnectionStrings:DefaultConnection`) — não ficam nos arquivos `appsettings*.json` deste repositório: são buscadas em tempo de execução no `Orcamentaria.ConfigBagService`, que centraliza a configuração de todos os serviços do ecossistema. `ApiGetawayConfiguration.BaseUrl` e `BOOTSTRAPSECRET` são as exceções que permanecem locais, pois são justamente o que o serviço precisa para localizar o API Gateway e se autenticar antes de buscar o restante da sua configuração.
 
 ---
 
