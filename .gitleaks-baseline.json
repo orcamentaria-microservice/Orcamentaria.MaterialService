@@ -1,0 +1,22 @@
+[
+ {
+  "Description": "BOOTSTRAPSECRET com valor",
+  "StartLine": 11,
+  "EndLine": 11,
+  "StartColumn": 5,
+  "EndColumn": 69,
+  "Match": "REDACTED",
+  "Secret": "REDACTED",
+  "File": "Orcamentaria.MaterialService.API/appsettings.json",
+  "SymlinkFile": "",
+  "Commit": "76039987bcd53f3c5c82dbfe6a9540b07bfbb1a1",
+  "Entropy": 5.034078,
+  "Author": "Marcelo Fernando Alves Nogueira",
+  "Email": "mafealno@gmail.com",
+  "Date": "2025-11-13T05:35:37Z",
+  "Message": "first commit",
+  "Tags": [],
+  "RuleID": "orcamentaria-bootstrap-secret",
+  "Fingerprint": "76039987bcd53f3c5c82dbfe6a9540b07bfbb1a1:Orcamentaria.MaterialService.API/appsettings.json:orcamentaria-bootstrap-secret:11"
+ }
+]
