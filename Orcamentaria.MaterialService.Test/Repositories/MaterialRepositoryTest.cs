@@ -41,7 +41,7 @@ namespace Orcamentaria.MaterialService.Test.Repositories
         {
             var materialId = 1;
             var suppliers = new[] { new MaterialSupplier(), new MaterialSupplier(), new MaterialSupplier() };
-            await _fixture.SeedInMemoryDatabase(_dbContext, materialId);
+            await _fixture.SeedInMemoryDatabaseWithIds(_dbContext, materialId);
 
             var mockRepository = new Mock<MaterialRepository>(_dbContext, _userAuthContext) { CallBase = true };
 
@@ -70,7 +70,7 @@ namespace Orcamentaria.MaterialService.Test.Repositories
         {
             var materialId = 4;
             var suppliers = new[] { new MaterialSupplier(), new MaterialSupplier(), new MaterialSupplier() };
-            await _fixture.SeedInMemoryDatabase(_dbContext, 1);
+            await _fixture.SeedInMemoryDatabaseWithIds(_dbContext, 1);
 
             var mockRepository = new Mock<MaterialRepository>(_dbContext, _userAuthContext) { CallBase = true };
 
@@ -85,7 +85,7 @@ namespace Orcamentaria.MaterialService.Test.Repositories
         {
             var materialId = 1;
             IEnumerable<MaterialSupplier> suppliers = null;
-            await _fixture.SeedInMemoryDatabase(_dbContext, materialId);
+            await _fixture.SeedInMemoryDatabaseWithIds(_dbContext, materialId);
 
             var mockRepository = new Mock<MaterialRepository>(_dbContext, _userAuthContext) { CallBase = true };
 
@@ -102,7 +102,7 @@ namespace Orcamentaria.MaterialService.Test.Repositories
             userAuthContext.CompanyId = 99999;
             var materialId = 1;
             var suppliers = new[] { new MaterialSupplier(), new MaterialSupplier(), new MaterialSupplier() };
-            await _fixture.SeedInMemoryDatabase(_dbContext, materialId);
+            await _fixture.SeedInMemoryDatabaseWithIds(_dbContext, materialId);
 
             var mockRepository = new Mock<MaterialRepository>(_dbContext, userAuthContext) { CallBase = true };
 
@@ -120,7 +120,7 @@ namespace Orcamentaria.MaterialService.Test.Repositories
             var materialId = 1;
             var supplierRemove = new MaterialSupplier { MaterialId = materialId, SupplierId = 1 };
             var suppliers = new[] { supplierRemove };
-            await _fixture.SeedInMemoryDatabase(_dbContext, materialId);
+            await _fixture.SeedInMemoryDatabaseWithIds(_dbContext, materialId);
             await _fixture.AddSuppliers(_dbContext, materialId, new[] { supplierRemove, new MaterialSupplier { MaterialId = materialId, SupplierId = 2 } });
 
             var mockRepository = new Mock<MaterialRepository>(_dbContext, _userAuthContext) { CallBase = true };
@@ -153,7 +153,7 @@ namespace Orcamentaria.MaterialService.Test.Repositories
             var materialId = 4;
             var supplierRemove = new MaterialSupplier { MaterialId = 4, SupplierId = 1 };
             var suppliers = new[] { supplierRemove };
-            await _fixture.SeedInMemoryDatabase(_dbContext, 1);
+            await _fixture.SeedInMemoryDatabaseWithIds(_dbContext, 1);
             await _fixture.AddSuppliers(_dbContext, 1, new[] { new MaterialSupplier { MaterialId = 1, SupplierId = 2 } });
 
             var mockRepository = new Mock<MaterialRepository>(_dbContext, _userAuthContext) { CallBase = true };
@@ -169,7 +169,7 @@ namespace Orcamentaria.MaterialService.Test.Repositories
         {
             var materialId = 1;
             IEnumerable<MaterialSupplier> suppliers = null;
-            await _fixture.SeedInMemoryDatabase(_dbContext, materialId);
+            await _fixture.SeedInMemoryDatabaseWithIds(_dbContext, materialId);
             await _fixture.AddSuppliers(_dbContext, materialId, new[] { new MaterialSupplier { MaterialId = materialId, SupplierId = 1 } });
 
             var mockRepository = new Mock<MaterialRepository>(_dbContext, _userAuthContext) { CallBase = true };
@@ -188,7 +188,7 @@ namespace Orcamentaria.MaterialService.Test.Repositories
             var materialId = 1;
             var supplierRemove = new MaterialSupplier { MaterialId = materialId, SupplierId = 1 };
             var suppliers = new[] { supplierRemove };
-            await _fixture.SeedInMemoryDatabase(_dbContext, materialId);
+            await _fixture.SeedInMemoryDatabaseWithIds(_dbContext, materialId);
             await _fixture.AddSuppliers(_dbContext, materialId, new[] { supplierRemove, new MaterialSupplier { MaterialId = materialId, SupplierId = 2 } });
 
             var mockRepository = new Mock<MaterialRepository>(_dbContext, userAuthContext) { CallBase = true };
