@@ -181,6 +181,20 @@ O `compose.yaml` sobe um container `mysql:8.0` para uso local/desenvolvimento, c
 
 ---
 
+## Configuração local
+
+Nenhum valor real deve existir nos arquivos versionados. Configure via `dotnet user-secrets` ou variáveis de ambiente:
+
+```bash
+dotnet user-secrets init --project Orcamentaria.MaterialService.API
+dotnet user-secrets set "BOOTSTRAPSECRET" "<valor-do-bootstrapsecret>" --project Orcamentaria.MaterialService.API
+dotnet user-secrets set "ConnectionStrings:DefaultConnection" "Server=localhost;Port=3306;Database=material;User=<user>;Password=<senha>;SslMode=Disabled" --project Orcamentaria.MaterialService.API
+```
+
+Ou crie `Orcamentaria.MaterialService.API/appsettings.Development.json` (já ignorado pelo `.gitignore`) com os valores locais. Nunca commite esse arquivo.
+
+---
+
 ## ▶️ Como Executar
 
 ### Pré-requisitos

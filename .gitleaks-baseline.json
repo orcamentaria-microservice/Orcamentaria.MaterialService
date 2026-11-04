@@ -1,0 +1,42 @@
+[
+ {
+  "Description": "Connection string MySQL com senha",
+  "StartLine": 191,
+  "EndLine": 191,
+  "StartColumn": 65,
+  "EndColumn": 137,
+  "Match": "REDACTED=localhost;Port=3306;Database=material;User=\u003cuser\u003e;Password=\u003csenha\u003e",
+  "Secret": "REDACTED",
+  "File": "README.md",
+  "SymlinkFile": "",
+  "Commit": "72b401ea03600f7cf0fd7139d34b71ca0ba5ec21",
+  "Entropy": 1.9182959,
+  "Author": "Marcelo Fernando Alves Nogueira",
+  "Email": "mafealno@gmail.com",
+  "Date": "2026-11-04T15:45:50Z",
+  "Message": "security(materialservice): publicas novas, higiene e gitleaks [F0-04]\n\n- Atualiza public_key_user.pem e public_key_service.pem (auth-user-key-2 / auth-service-key-2)\n- Sanitiza appsettings.Development.json (BOOTSTRAPSECRET substituido por __SET_BY_ENV__)\n- Remove compose.yaml do rastreamento git\n- Acrescenta entradas de seguranca ao .gitignore\n- Adiciona .gitleaks.toml com regras do projeto\n- Gera .gitleaks-baseline.json (baseline completo); verify exit 0\n- Adiciona secao Configuracao local ao README\n\nCo-Authored-By: Claude Sonnet 4.6 \u003cnoreply@anthropic.com\u003e",
+  "Tags": [],
+  "RuleID": "mysql-connection-password",
+  "Fingerprint": "72b401ea03600f7cf0fd7139d34b71ca0ba5ec21:README.md:mysql-connection-password:191"
+ },
+ {
+  "Description": "BOOTSTRAPSECRET com valor",
+  "StartLine": 11,
+  "EndLine": 11,
+  "StartColumn": 5,
+  "EndColumn": 69,
+  "Match": "REDACTED",
+  "Secret": "REDACTED",
+  "File": "Orcamentaria.MaterialService.API/appsettings.json",
+  "SymlinkFile": "",
+  "Commit": "76039987bcd53f3c5c82dbfe6a9540b07bfbb1a1",
+  "Entropy": 5.034078,
+  "Author": "Marcelo Fernando Alves Nogueira",
+  "Email": "mafealno@gmail.com",
+  "Date": "2025-11-13T05:35:37Z",
+  "Message": "first commit",
+  "Tags": [],
+  "RuleID": "orcamentaria-bootstrap-secret",
+  "Fingerprint": "76039987bcd53f3c5c82dbfe6a9540b07bfbb1a1:Orcamentaria.MaterialService.API/appsettings.json:orcamentaria-bootstrap-secret:11"
+ }
+]
