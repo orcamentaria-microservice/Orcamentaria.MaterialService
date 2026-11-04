@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Options;
+﻿using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
 using Orcamentaria.Lib.Domain.Enums;
 using Orcamentaria.Lib.Domain.Exceptions;
 using Orcamentaria.Lib.Domain.Models;
@@ -20,20 +21,20 @@ namespace Orcamentaria.MaterialService.Infrastructure.ServiceClients
         private readonly ApiGetawayConfiguration _apiGetawayConfiguration;
         private readonly ITokenProvider _tokenProvider;
         private readonly ResiliencePipeline<Response<IEnumerable<PersonResponseDTO>>> _pipeline;
-        private readonly IMemoryCacheService _memoryCacheService;
+        private readonly ICacheService _cache;
 
         public PersonServiceClient(
-            IApiGetawayService apiGetawayService, 
+            IApiGetawayService apiGetawayService,
             IOptions<ApiGetawayConfiguration> apiGetawayConfiguration,
             ITokenProvider tokenProvider,
             ResiliencePipeline<Response<IEnumerable<PersonResponseDTO>>> pipeline,
-            IMemoryCacheService memoryCacheService)
+            [FromKeyedServices("memory")] ICacheService cache)
         {
             _apiGetawayService = apiGetawayService;
             _apiGetawayConfiguration = apiGetawayConfiguration.Value;
             _tokenProvider = tokenProvider;
             _pipeline = pipeline;
-            _memoryCacheService = memoryCacheService;
+            _cache = cache;
         }
 
         public async Task<Response<IEnumerable<PersonResponseDTO>>> GetSuppliersAsync(IEnumerable<long> personIds)
@@ -99,11 +100,11 @@ namespace Orcamentaria.MaterialService.Infrastructure.ServiceClients
                     return response;
 
                 string key = "supplierKey";
-                _memoryCacheService.GetMemoryCache(key, out string? suppliersCached);
+                var suppliersCached = await _cache.GetAsync<string>(key);
 
                 if (string.IsNullOrEmpty(suppliersCached))
                 {
-                    _memoryCacheService.SetMemoryCache(key, JsonSerializer.Serialize(
+                    await _cache.SetAsync(key, JsonSerializer.Serialize(
                         response.Data!.Select(x => new PersonResponseDTO
                         {
                             Id = x.Id,
@@ -117,7 +118,7 @@ namespace Orcamentaria.MaterialService.Infrastructure.ServiceClients
 
                 var suppliers = JsonSerializer.Deserialize<IEnumerable<PersonResponseDTO>>(suppliersCached);
 
-                _memoryCacheService.SetMemoryCache(key, JsonSerializer.Serialize(
+                await _cache.SetAsync(key, JsonSerializer.Serialize(
                     suppliers!.Select(x =>  response.Data?.FirstOrDefault(u => u.Id == x.Id) ?? x)
                         .Select(x => new PersonResponseDTO
                         {

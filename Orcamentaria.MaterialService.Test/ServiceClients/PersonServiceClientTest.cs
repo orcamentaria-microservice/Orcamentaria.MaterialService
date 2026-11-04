@@ -52,13 +52,9 @@ namespace Orcamentaria.MaterialService.Test.Services
                 .Setup(t => t.GetTokenAsync(It.IsAny<bool>()))
                 .ReturnsAsync("token");
 
-            _mocker.GetMock<IMemoryCacheService>()
-                .Setup(m => m.GetMemoryCache(It.IsAny<string>(), out It.Ref<string?>.IsAny))
-                .Returns((string key, out string? val) =>
-                {
-                    val = null;
-                    return true;
-                });
+            _mocker.GetMock<ICacheService>()
+                .Setup(m => m.GetAsync<string>(It.IsAny<string>(), It.IsAny<CancellationToken>()))
+                .ReturnsAsync((string?)null);
 
             _mocker.GetMock<IApiGetawayService>()
                 .Setup(a => a.Routing<IEnumerable<PersonResponseDTO>>(
@@ -77,7 +73,7 @@ namespace Orcamentaria.MaterialService.Test.Services
             response.Data.Should().NotBeNull();
             response.Data!.Select(x => x.Id).Should().BeEquivalentTo(ids);
 
-            _mocker.GetMock<IMemoryCacheService>().Verify(m => m.SetMemoryCache(It.IsAny<string>(), It.IsAny<string>()), Times.Once);
+            _mocker.GetMock<ICacheService>().Verify(m => m.SetAsync(It.IsAny<string>(), It.IsAny<string>(), null, It.IsAny<CancellationToken>()), Times.Once);
         }
 
         [Fact]
@@ -94,13 +90,9 @@ namespace Orcamentaria.MaterialService.Test.Services
                 .Setup(t => t.GetTokenAsync(It.IsAny<bool>()))
                 .ReturnsAsync("token");
 
-            _mocker.GetMock<IMemoryCacheService>()
-                .Setup(m => m.GetMemoryCache(It.IsAny<string>(), out It.Ref<string?>.IsAny))
-                .Returns((string key, out string? val) =>
-                {
-                    val = cachedJson;
-                    return true;
-                });
+            _mocker.GetMock<ICacheService>()
+                .Setup(m => m.GetAsync<string>(It.IsAny<string>(), It.IsAny<CancellationToken>()))
+                .ReturnsAsync(cachedJson);
 
             _mocker.GetMock<IApiGetawayService>()
                 .Setup(a => a.Routing<IEnumerable<PersonResponseDTO>>(
@@ -118,7 +110,7 @@ namespace Orcamentaria.MaterialService.Test.Services
             response.Success.Should().BeTrue();
             response.Data.Should().NotBeNull();
 
-            _mocker.GetMock<IMemoryCacheService>().Verify(m => m.SetMemoryCache(It.IsAny<string>(), It.IsAny<string>()), Times.Once);
+            _mocker.GetMock<ICacheService>().Verify(m => m.SetAsync(It.IsAny<string>(), It.IsAny<string>(), null, It.IsAny<CancellationToken>()), Times.Once);
         }
 
         [Fact]
@@ -146,7 +138,7 @@ namespace Orcamentaria.MaterialService.Test.Services
 
             result.Should().BeSameAs(apiResponse);
 
-            _mocker.GetMock<IMemoryCacheService>().Verify(m => m.SetMemoryCache(It.IsAny<string>(), It.IsAny<string>()), Times.Never);
+            _mocker.GetMock<ICacheService>().Verify(m => m.SetAsync(It.IsAny<string>(), It.IsAny<string>(), null, It.IsAny<CancellationToken>()), Times.Never);
         }
 
         [Fact]
