@@ -1,4 +1,5 @@
-﻿using Orcamentaria.Lib.Domain.Enums;
+﻿using Microsoft.Extensions.DependencyInjection;
+using Orcamentaria.Lib.Domain.Enums;
 using Orcamentaria.Lib.Domain.Exceptions;
 using Orcamentaria.Lib.Domain.Models.Responses;
 using Orcamentaria.Lib.Domain.Services;
@@ -7,18 +8,17 @@ using Polly;
 using Polly.CircuitBreaker;
 using Polly.Fallback;
 using System.Text.Json;
-using System.Text.Json.Serialization;
 
 namespace Orcamentaria.MaterialService.Application.Services
 {
 
     public class PersonResilienceService : IResilienceService<Response<IEnumerable<PersonResponseDTO>>>
     {
-        private readonly IMemoryCacheService _memoryCacheService;
+        private readonly ICacheService _cache;
 
-        public PersonResilienceService(IMemoryCacheService memoryCacheService)
+        public PersonResilienceService([FromKeyedServices("memory")] ICacheService cache)
         {
-            _memoryCacheService = memoryCacheService;
+            _cache = cache;
         }
 
         public PredicateBuilder<Response<IEnumerable<PersonResponseDTO>>> CreatePredicate()
@@ -28,14 +28,14 @@ namespace Orcamentaria.MaterialService.Application.Services
             .HandleResult(args => !args.Success && args.Error?.ErrorCode == ErrorCodeEnum.ServiceUnavailable);
 
         public Func<FallbackActionArguments<Response<IEnumerable<PersonResponseDTO>>>, ValueTask<Outcome<Response<IEnumerable<PersonResponseDTO>>>>> FallbackAction()
-            => args =>
+            => async args =>
             {
                 args.Context.Properties.TryGetValue(new ResiliencePropertyKey<IEnumerable<long>>("supplierIds"), out var supplierIds);
 
-                _memoryCacheService.GetMemoryCache("supplierKey", out string? suppliersCached);
+                var suppliersCached = await _cache.GetAsync<string>("supplierKey");
 
                 if (string.IsNullOrEmpty(suppliersCached))
-                    return Outcome.FromResultAsValueTask(new Response<IEnumerable<PersonResponseDTO>>
+                    return Outcome.FromResult(new Response<IEnumerable<PersonResponseDTO>>
                     {
                         Success = false,
                         Message = "Serviço inacessivel - Fallback",
@@ -47,7 +47,7 @@ namespace Orcamentaria.MaterialService.Application.Services
 
                 var suppliers = JsonSerializer.Deserialize<IEnumerable<PersonResponseDTO>>(suppliersCached);
 
-                return Outcome.FromResultAsValueTask(new Response<IEnumerable<PersonResponseDTO>>
+                return Outcome.FromResult(new Response<IEnumerable<PersonResponseDTO>>
                 {
                     Success = false,
                     Message = "Serviço inacessivel - Fallback",

@@ -2,6 +2,7 @@
 using Moq;
 using Moq.AutoMock;
 using Orcamentaria.Lib.Domain.Models.Responses;
+using Orcamentaria.Lib.Domain.Services;
 using Orcamentaria.MaterialService.Domain.DTOs.Person;
 using Orcamentaria.MaterialService.Application.Services;
 using Orcamentaria.MaterialService.Test.Fixtures;
@@ -42,13 +43,9 @@ namespace Orcamentaria.MaterialService.Test.Services
             var context = ResilienceContextPool.Shared.Get();
             context.Properties.Set(new ResiliencePropertyKey<IEnumerable<long>>("supplierIds"), supplierIds);
 
-            _mocker.GetMock<Orcamentaria.Lib.Domain.Services.IMemoryCacheService>()
-                .Setup(m => m.GetMemoryCache(It.IsAny<string>(), out It.Ref<string?>.IsAny))
-                .Returns((string key, out string? val) =>
-                {
-                    val = null;
-                    return true;
-                });
+            _mocker.GetMock<ICacheService>()
+                .Setup(m => m.GetAsync<string>(It.IsAny<string>(), It.IsAny<CancellationToken>()))
+                .ReturnsAsync((string?)null);
 
             var outcome = Outcome.FromResult<Response<IEnumerable<PersonResponseDTO>>>(new Response<IEnumerable<PersonResponseDTO>>());
             var args = new FallbackActionArguments<Response<IEnumerable<PersonResponseDTO>>>(context, outcome);
@@ -87,13 +84,9 @@ namespace Orcamentaria.MaterialService.Test.Services
             var context = ResilienceContextPool.Shared.Get();
             context.Properties.Set(new ResiliencePropertyKey<IEnumerable<long>>("supplierIds"), supplierIds);
 
-            _mocker.GetMock<Orcamentaria.Lib.Domain.Services.IMemoryCacheService>()
-                .Setup(m => m.GetMemoryCache(It.IsAny<string>(), out It.Ref<string?>.IsAny))
-                .Returns((string key, out string? val) =>
-                {
-                    val = cachedJson;
-                    return true;
-                });
+            _mocker.GetMock<ICacheService>()
+                .Setup(m => m.GetAsync<string>(It.IsAny<string>(), It.IsAny<CancellationToken>()))
+                .ReturnsAsync(cachedJson);
 
             var outcome = Outcome.FromResult<Response<IEnumerable<PersonResponseDTO>>>(new Response<IEnumerable<PersonResponseDTO>>());
             var args = new FallbackActionArguments<Response<IEnumerable<PersonResponseDTO>>>(context, outcome);

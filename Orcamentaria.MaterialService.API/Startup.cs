@@ -2,6 +2,7 @@
 using Orcamentaria.Lib.Domain.Models.Responses;
 using Orcamentaria.Lib.Domain.Validators;
 using Orcamentaria.Lib.Infrastructure.Configures;
+using Orcamentaria.Lib.Infrastructure.Extensions;
 using Orcamentaria.MaterialService.Application.Services;
 using Orcamentaria.MaterialService.Application.Validators;
 using Orcamentaria.MaterialService.Domain.DTOs.Person;
@@ -63,7 +64,7 @@ namespace Orcamentaria.MaterialService.API
                     services.AddScoped<IPersonServiceClient, PersonServiceClient>();
 
                     //Resiliences
-                    services.ConfigureResilience<Response<IEnumerable<PersonResponseDTO>>, PersonResilienceService>(
+                    services.AddResilience<Response<IEnumerable<PersonResponseDTO>>, PersonResilienceService>(
                     retryResilience: new RetryResilience(),
                     circuitBreakerResilience: new CircuitBreakerResilience<Response<IEnumerable<PersonResponseDTO>>>());
                 });
